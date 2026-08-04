@@ -6,17 +6,20 @@
 ******                     Neyra Oré, Álvaro                    ******
 ******                     Neyra Oré, Renato                    ******
 ******                                                          ******
+****** Stata version 17                                         ******
 **********************************************************************
 
 *ssc install geodist
 *ssc install spmap
 *ssc install outreg2
 
-capture cd "C:\Users\HP\Downloads\Spatial-hedonics-crime"
+
+
+capture cd "C:\Users\HP\Downloads\Spatial-hedonics-crime\STATA"
 use "caba_housing_crime_panel", clear
 
-* Se prepara el dataset y crean las variables necesarias
-run "1_hedonic_crime_model"
+* The dataset is prepared, and the necessary variables are created
+do "1_hedonic_crime_model"
 
-* Se obtienen estadidisticas y demas resultados
-run "2_hedonic_crime_model"
+* Statistics and other results are obtained
+do "2_hedonic_crime_model"
