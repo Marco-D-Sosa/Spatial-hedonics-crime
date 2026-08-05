@@ -1,33 +1,35 @@
+cap mkdir "Results"
+
 * Obtain relevant descriptive statistics
 * 1) Table of average prices by year
 preserve
    collapse (mean) price, by(date)
-   export excel using "C:\Users\HP\Downloads\Spatial-hedonics-crime\STATA\average tables", sheetmodify sheet("sheet1") cell(B2) firstrow(variables)
+   export excel using "$path\Results\average_tables.xlsx", sheetmodify sheet("sheet1") cell(B2) firstrow(variables)
 restore
 sum price
 * 2) Table of average crimes per year
 preserve
    collapse (mean) tot_crimes, by(date)
-   export excel using "C:\Users\HP\Downloads\Spatial-hedonics-crime\STATA\average tables", sheetmodify sheet("sheet2") cell(B2) firstrow(variables)
+   export excel using "$path\Results\average_tables.xlsx", sheetmodify sheet("sheet2") cell(B2) firstrow(variables)
 restore
 * 3) Map of average prices by neighborhood
 preserve
 collapse (mean) price, by(id_neighborhood)
 spmap price using "neighborhoods_coord.dta", id(id_neighborhood) fcolor(Blues) clmethod(quantile)
-graph export "C:\Users\HP\Downloads\Spatial-hedonics-crime\STATA\price map.png", replace
+graph export "$path\Results\price_map.png", replace
 restore
 * 4) Map of average crime rates by neighborhood
 preserve
 collapse (mean) tot_crimes, by(id_neighborhood)
 spmap tot_crimes using "neighborhoods_coord.dta", id(id_neighborhood) fcolor(Reds) clmethod(quantile)
-graph export "C:\Users\HP\Downloads\Spatial-hedonics-crime\STATA\crime_map.png", replace 
+graph export "$path\Results\crime_map.png", replace 
 restore
 
 * Main econometric model
 local structural = "accommodates bathrooms bedrooms beds i.(room_type)"
 local control = "min_dist_uni tot_universities tot_establishments number_hospitals average_tfi"
 xtreg lprice lcrimes `structural' `control' i.(date), re robust
-outreg2 using "C:\Users\HP\Downloads\Spatial-hedonics-crime\STATA\modelo_principal.txt", replace
+outreg2 using "$path\Results\modelo_principal.txt", replace
 
 * Calculation of marginal and total cost
 summarize price if e(sample)
@@ -51,7 +53,7 @@ restore
 * Model with disaggregated offenses
 local crimes = "lthreats lhomicides ltheft linjuries lrobbery ltraffic"
 xtreg lprice `crimes' `structural' `control' i.(date), re robust
-outreg2 using "C:\Users\HP\Downloads\Spatial-hedonics-crime\STATA\disaggregated_model.txt", replace
+outreg2 using "$path\Results\disaggregated_model.txt", replace
 
 * Regression plot
 twoway (scatter lprice lcrimes, mcolor(blue%50)) ///
@@ -59,4 +61,4 @@ twoway (scatter lprice lcrimes, mcolor(blue%50)) ///
        title("Relationship between insecurity and rental prices") ///
        xtitle("ln(Crimes)") ytitle("ln(Price)")
 	   
-graph export "C:\Users\HP\Downloads\Spatial-hedonics-crime\STATA\graph_reg.png", replace 
+graph export "$path\Results\graph_reg.png", replace 
