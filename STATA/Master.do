@@ -15,7 +15,9 @@
 
 
 
-capture cd "C:\Users\HP\Downloads\Spatial-hedonics-crime\STATA"
+global path "" // Add your path to the folder here
+
+cd "$path"
 use "caba_housing_crime_panel", clear
 
 * The dataset is prepared, and the necessary variables are created
