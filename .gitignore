@@ -1,8 +1,7 @@
-# Ignorar bases de datos pesadas 
+# Ignore
 *.csv
 *.xlsx
 *.dta
-
-# Ignorar
 *.tmp
 *.log
+*.png
