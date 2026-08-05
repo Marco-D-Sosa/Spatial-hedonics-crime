@@ -1,4 +1,3 @@
-
 * Obtain relevant descriptive statistics
 * 1) Table of average prices by year
 preserve
@@ -15,49 +14,49 @@ restore
 preserve
 collapse (mean) price, by(id_neighborhood)
 spmap price using "neighborhoods_coord.dta", id(id_neighborhood) fcolor(Blues) clmethod(quantile)
-graph export "C:\Users\HP\Downloads\Spatial-hedonics-crime\STATA\mapa_precios.png", replace
+graph export "C:\Users\HP\Downloads\Spatial-hedonics-crime\STATA\price map.png", replace
 restore
-*4) mapa de delitos promedio por barrio
+* 4) Map of average crime rates by neighborhood
 preserve
 collapse (mean) tot_crimes, by(id_neighborhood)
 spmap tot_crimes using "neighborhoods_coord.dta", id(id_neighborhood) fcolor(Reds) clmethod(quantile)
-graph export "C:\Users\HP\Downloads\Spatial-hedonics-crime\STATA\mapa_delitos.png", replace 
+graph export "C:\Users\HP\Downloads\Spatial-hedonics-crime\STATA\crime_map.png", replace 
 restore
 
-*Modelo econometrico principal
-local estructural = "accommodates bathrooms bedrooms beds i.(room_type)"
-local control = "min_dist_uni total_universidades total_establecimientos cantidad_hospitales average_tfi"
-xtreg lprice lcrimes `estructural' `control' i.(date), re robust
+* Main econometric model
+local structural = "accommodates bathrooms bedrooms beds i.(room_type)"
+local control = "min_dist_uni tot_universities tot_establishments number_hospitals average_tfi"
+xtreg lprice lcrimes `structural' `control' i.(date), re robust
 outreg2 using "C:\Users\HP\Downloads\Spatial-hedonics-crime\STATA\modelo_principal.txt", replace
 
-* calculo de costo marginal y total
+* Calculation of marginal and total cost
 summarize price if e(sample)
 local mean_price = r(mean)
 summarize tot_crimes if e(sample)
-local mean_delitos = r(mean)
+local mean_crimes = r(mean)
 matrix b = e(b)
 local gamma = b[1,"lcrimes"]
-display "Elasticidad precio-delitos (gamma): " `gamma'
-display "Costo marginal por % de delito: " (`gamma'/100*`mean_price')
-display "Costo marginal por unidad de delito: " (`gamma'*`mean_price'/`mean_delitos')
-display "Costo total de la prevención (por vivienda): " (`gamma'*`mean_price')
+display "Price elasticity of crime (gamma): " `gamma'
+display "Marginal cost per percentage of crime: " (`gamma'/100*`mean_price')
+display "Marginal cost per unit of crime: " (`gamma'*`mean_price'/`mean_crimes')
+display "Total cost of prevention (per dwelling): " (`gamma'*`mean_price')
 
-*Mapa de precios predichos
-predict precio_pred if e(sample), xb
+* Map of predicted prices
+predict price_pred if e(sample), xb
 preserve
-collapse (mean) precio_pred, by(neighborhood)
-spmap precio_pred using "neighborhoods_coord.dta", id(id) fcolor(Blues) clmethod(quantile)
+collapse (mean) price_pred, by(id_neighborhood)
+spmap price_pred using "neighborhoods_coord.dta", id(id_neighborhood) fcolor(Blues) clmethod(quantile)
 restore
 
-*Modelo con delitos desagregados
-local delitos = "lthreats lhomicides ltheft linjuries lrobbery ltraffic"
-xtreg lprice `delitos' `estructural' `control' i.(date), re robust
-outreg2 using "C:\Users\HP\Downloads\Spatial-hedonics-crime\STATA\modelo_desagregado.txt", replace
+* Model with disaggregated offenses
+local crimes = "lthreats lhomicides ltheft linjuries lrobbery ltraffic"
+xtreg lprice `crimes' `structural' `control' i.(date), re robust
+outreg2 using "C:\Users\HP\Downloads\Spatial-hedonics-crime\STATA\disaggregated_model.txt", replace
 
-*Grafico de la regresion
+* Regression plot
 twoway (scatter lprice lcrimes, mcolor(blue%50)) ///
        (lfit lprice lcrimes, lcolor(red)), ///
-       title("Relación entre inseguridad y precio de alquiler") ///
-       xtitle("ln(Delitos)") ytitle("ln(Precio)")
+       title("Relationship between insecurity and rental prices") ///
+       xtitle("ln(Crimes)") ytitle("ln(Price)")
 	   
 graph export "C:\Users\HP\Downloads\Spatial-hedonics-crime\STATA\graph_reg.png", replace 
