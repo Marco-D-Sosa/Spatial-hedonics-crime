@@ -1,4 +1,3 @@
-
 * Structure the data as a panel
 gen date_m = .
 replace date_m = tm(2017m7) if date==6
