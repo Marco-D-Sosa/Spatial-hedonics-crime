@@ -8,7 +8,7 @@ import hedonic_crime_model_2
 def main():
     print("Opening database...")
     path = kagglehub.dataset_download("marcodiazzz/buenos-aires-rentals-and-crime")
-    df_base = pd.read_csv("f{path}/caba_housing_crime_panel.csv") 
+    df_base = pd.read_csv(f"{path}/caba_housing_crime_panel.csv") 
     
     # =====================================================================
 
