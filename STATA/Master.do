@@ -21,7 +21,7 @@ cd "$path"
 use "caba_housing_crime_panel", clear
 
 * The dataset is prepared, and the necessary variables are created
-do "1_hedonic_crime_model"
+do "hedonic_crime_model_1"
 
 * Statistics and other results are obtained
-do "2_hedonic_crime_model"
+do "hedonic_crime_model_2"
