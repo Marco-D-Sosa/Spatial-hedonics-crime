@@ -1,0 +1,7 @@
+pandas
+kagglehub
+numpy
+matplotlib
+geopandas
+linearmodels
+seaborn
