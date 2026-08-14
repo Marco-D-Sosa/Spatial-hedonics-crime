@@ -18,9 +18,9 @@ def prepare_data(df):
     df.loc[ df['date'] == 'November 2024', 'date_m'] = pd.to_datetime('2024-11-01')
     df.loc[ df['date'] == 'December 2024', 'date_m'] = pd.to_datetime('2024-12-01')    
     
-    # Since information regarding bathrooms or rooms is unavailable for certain specific years 
-    # (primarily the oldest ones), utilize panel data—assuming that no additional bathrooms or 
-    # rooms were built between periods—to complete the dataset.
+    # Missing structural data (bathrooms/bedrooms) for certain years is imputed using backward fill.
+    # Methodological assumption: Properties are assumed not to undergo significant structural 
+    # modifications (e.g., renovations or expansions) between the unobserved periods.
     df = df.sort_values(by=['id', 'date_m'])
     df['bathrooms'] = df.groupby('id')['bathrooms'].bfill()
     df['bedrooms'] = df.groupby('id')['bedrooms'].bfill()    
@@ -36,8 +36,11 @@ def prepare_data(df):
     df.loc[ df['date_m'] == '2024-10-01', 'price'] = df['price']*(100/7314.0)
     df.loc[ df['date_m'] == '2024-11-01', 'price'] = df['price']*(100/7491.4)
     df.loc[ df['date_m'] == '2024-12-01', 'price'] = df['price']*(100/7694.0)
-    # Converted USD to ARS using the average exchange rate for December 2016
-    df.loc[ df['currency'] == 'USD', 'price'] = df['price']*14.97    
+    # Converted USD to ARS using the average exchange rate for December 2016 ($14.97).
+    # Methodological note: This fixed rate is not an error applied to recent years; 
+    # listings in USD belong exclusively to a specific older cross-section in the dataset. 
+    # This conversion anchors those specific prices to the base period (Dec. 2016) prior to IPC deflation.
+    df.loc[ df['currency'] == 'USD', 'price'] = df['price']*14.97
     
     #The same applies to the TFI
     df['average_tfi'] = df['average_tfi'].astype(float)

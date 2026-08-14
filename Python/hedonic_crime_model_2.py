@@ -56,11 +56,18 @@ def generate_results(df):
     print("="*60)
     
     # Main econometric model
+    # Methodological justification for spatial controls:
+    # - Hospitals: Included because they add property value and reduce crime due to associated moral costs.
+    # - Universities & Educational Establishments: Act as proxy variables to capture the educational 
+    #   and socioeconomic level of the neighborhood's population, given the lack of direct data.
     structural = ['accommodates', 'bathrooms', 'bedrooms', 'beds', 'C(room_type)']
     control = ['min_dist_uni', 'tot_universities', 'tot_establishments', 'number_hospitals', 'average_tfi']  
     formula = "lprice ~ 1 + lcrimes + " + " + ".join(structural) + " + " + " + ".join(control) + "+ C(date)"
     periodos_a_eliminar = ['July 2017', 'January 2018']
     df = df[~df['date'].isin(periodos_a_eliminar)].copy()
+    # A Random Effects (RE) estimator is used instead of pooled OLS to leverage the panel structure.
+    # This controls for unobserved heterogeneity, while time dummies (C(date)) capture macroeconomic seasonality.
+    model_re = RandomEffects.from_formula(formula, data=df, check_rank=False)
     model_re = RandomEffects.from_formula(formula, data=df, check_rank=False)
     results = model_re.fit(cov_type='robust')
     print("--- Main econometric model ---")
