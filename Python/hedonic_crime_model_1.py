@@ -53,12 +53,12 @@ def prepare_data(df):
     # Apply a logarithm to some variables
     df['lprice'] = np.log(df['price'])
     df['lcrimes'] = np.log(df['tot_crimes'])
-    df['lthreats'] = np.log(df['tot_threats'])
-    df['lhomicides'] = np.log(df['tot_homicides'])
-    df['ltheft'] = np.log(df['tot_theft'])
-    df['linjuries'] = np.log(df['tot_injuries'])
-    df['lrobbery'] = np.log(df['tot_robbery'])
-    df['ltraffic'] = np.log(df['tot_traffic'])
+    df['lthreats'] = np.log1p(df['tot_threats'])
+    df['lhomicides'] = np.log1p(df['tot_homicides'])
+    df['ltheft'] = np.log1p(df['tot_theft'])
+    df['linjuries'] = np.log1p(df['tot_injuries'])
+    df['lrobbery'] = np.log1p(df['tot_robbery'])
+    df['ltraffic'] = np.log1p(df['tot_traffic'])
     
     # Structure the data as a panel
     df = df.sort_values(by=['id', 'date_m'], ascending=[True, False])
