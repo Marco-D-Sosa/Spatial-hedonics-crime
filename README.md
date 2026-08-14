@@ -11,6 +11,12 @@ This repository contains two independent workflows (Python and Stata) that execu
 
 ---
 
+## Dataset Information & Methodology
+
+The dataset utilized in this repository was custom-built specifically for this spatial hedonic pricing analysis. It integrates short-term rental data from Inside Airbnb with official crime records, geographic features, and socioeconomic indicators (such as average family income) provided by the Buenos Aires City Government Open Data Portal and the City's Statistics Institute. 
+
+Because short-term rental prices reflect the willingness to pay for temporary housing in a specific location, the data inherently captures the premium or penalty associated with local neighborhood attributes, including perceived security. To facilitate transparency and reproducibility, this compiled panel dataset is publicly hosted and maintained by the author on Kaggle at [marcodiazzz/buenos-aires-rentals-and-crime].
+
 ## 🐍 Python Workflow (Fully Automated)
 
 The Python pipeline is completely automated, handling data downloading, processing, and output generation entirely in memory or via console prints.
