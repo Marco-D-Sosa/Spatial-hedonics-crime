@@ -26,8 +26,16 @@ graph export "$path\Results\crime_map.png", replace
 restore
 
 * Main econometric model
+* Methodological justification for spatial controls:
+* - Hospitals: Included because they add property value and reduce crime due to associated moral costs.
+* - Universities & Establishments: Act as proxy variables to capture the educational and 
+*   socioeconomic level of the neighborhood's population, given the lack of direct data.
 local structural = "accommodates bathrooms bedrooms beds i.(room_type)"
 local control = "min_dist_uni tot_universities tot_establishments number_hospitals average_tfi"
+* Main econometric model
+* A Random Effects (RE) estimator is used instead of pooled OLS to leverage the panel structure.
+* This controls for unobserved heterogeneity, while time dummies (i.date) capture macroeconomic seasonality.
+xtreg lprice lcrimes `structural' `control' i.(date), re robust
 xtreg lprice lcrimes `structural' `control' i.(date), re robust
 outreg2 using "$path\Results\modelo_principal.txt", replace
 
