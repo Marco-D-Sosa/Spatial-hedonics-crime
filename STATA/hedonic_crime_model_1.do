@@ -13,7 +13,8 @@ replace date_m = tm(2024m12) if date==4
 xtset id date_m
 
 * Since information regarding bathrooms or rooms is unavailable for certain specific years (primarily the oldest ones), 
-* utilize panel data—assuming that no additional bathrooms or rooms were built between periods—to complete the dataset.
+* utilize panel data to complete the dataset. Methodological assumption: Properties are assumed not to undergo 
+* significant structural modifications (e.g., renovations or expansions) between the unobserved periods.
 gsort id -date_m
 bysort id (date_m): replace bathrooms = bathrooms[_n+1] if missing(bathrooms)
 bysort id (date_m): replace bedrooms = bedrooms[_n-1] if missing(bedrooms)
@@ -31,7 +32,10 @@ replace price = price*(100/7122.2) if date_m==tm(2024m9)
 replace price = price*(100/7314.0) if date_m==tm(2024m10)
 replace price = price*(100/7491.4) if date_m==tm(2024m11)
 replace price = price*(100/7694.0) if date_m==tm(2024m12)
-* Converted USD to ARS using the average exchange rate for December 2016
+* Converted USD to ARS using the average exchange rate for December 2016 ($14.97)
+* Methodological note: This fixed rate is not an error applied to recent years; 
+* listings in USD belong exclusively to a specific older cross-section in the dataset. 
+* This conversion anchors those specific prices to the base period (Dec. 2016) prior to IPC deflation.
 replace price = price*14.97 if currency=="USD"
 
 * The same applies to the TFI
@@ -49,9 +53,9 @@ replace average_tfi = average_tfi*(100/7694.0) if date_m==tm(2024m12)
 * Apply a logarithm to some variables
 gen lprice = ln(price)
 gen lcrimes = ln(tot_crimes)
-gen lthreats = ln(tot_threats)
-gen lhomicides = ln(tot_homicides)
-gen ltheft = ln(tot_theft)
-gen linjuries = ln(tot_injuries)
-gen lrobbery = ln(tot_robbery)
-gen ltraffic = ln(tot_traffic)
+gen lthreats = ln(1+tot_threats)
+gen lhomicides = ln(1+tot_homicides)
+gen ltheft = ln(1+tot_theft)
+gen linjuries = ln(1+tot_injuries)
+gen lrobbery = ln(1+tot_robbery)
+gen ltraffic = ln(1+tot_traffic)
