@@ -37,7 +37,7 @@ local control = "min_dist_uni tot_universities tot_establishments number_hospita
 * This controls for unobserved heterogeneity, while time dummies (i.date) capture macroeconomic seasonality.
 xtreg lprice lcrimes `structural' `control' i.(date), re robust
 xtreg lprice lcrimes `structural' `control' i.(date), re robust
-outreg2 using "$path\Results\modelo_principal.txt", replace
+outreg2 using "$path\Results\model_principal.txt", replace
 
 * Calculation of marginal and total cost
 summarize price if e(sample)
@@ -61,7 +61,7 @@ restore
 * Model with disaggregated offenses
 local crimes = "lthreats lhomicides ltheft linjuries lrobbery ltraffic"
 xtreg lprice `crimes' `structural' `control' i.(date), re robust
-outreg2 using "$path\Results\disaggregated_model.txt", replace
+outreg2 using "$path\Results\model_desagregated.txt", replace
 
 * Regression plot
 twoway (scatter lprice lcrimes, mcolor(blue%50)) ///
