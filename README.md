@@ -1,21 +1,27 @@
 # Spatial Hedonics: Crime & Short-Term Rentals in Buenos Aires
 
-Stata and Python codebase for estimating the costs of crime in the Autonomous City of Buenos Aires (CABA) using a spatial hedonic pricing model on short-term rental housing.
+![Spatial Heatmap of Rental Prices in CABA](map_price.png)
 
-This repository contains two independent workflows (Python and Stata) that execute the analytical pipeline.
+*(Caption: Municipal-level heat map illustrating the spatial distribution of short-term rental prices in the Autonomous City of Buenos Aires)*
 
-## Repository Structure
+## 📊 Executive Summary (Business & Economic Value)
 
-* `Python/`: Contains the fully automated Python pipeline.
-* `Stata/`: Contains the Stata `.do` files (requires manual data handling).
+Real estate pricing and temporary rental markets are highly sensitive to neighborhood externalities. This project quantifies that exact relationship by estimating the economic cost of crime in the Autonomous City of Buenos Aires (CABA) through a **spatial hedonic pricing model**.
 
----
+**Key Findings & Impact:**
+* **End-to-End Data Engineering:** Built, cleaned, and consolidated a custom panel dataset from scratch with over **145,000 observations**, merging disparate public data sources.
+* **Economic Insight:** The model estimates that a **1% increase in local crime is associated with a 0.062% drop in short-term rental prices**. 
+* **Business Application:** This methodology is directly applicable to real estate valuation, urban planning consulting, and dynamic pricing algorithms that need to factor in geospatial externalities.
 
-## Dataset Information & Methodology
+## 🧠 Dataset & Methodology
 
-The dataset utilized in this repository was custom-built specifically for this spatial hedonic pricing analysis. It integrates short-term rental data from Inside Airbnb with official crime records, geographic features, and socioeconomic indicators (such as average family income) provided by the Buenos Aires City Government Open Data Portal and the City's Statistics Institute. 
+Because short-term rental prices reflect the willingness to pay for temporary housing in a specific location, the data inherently captures the premium or penalty associated with local neighborhood attributes, including perceived security. 
 
-Because short-term rental prices reflect the willingness to pay for temporary housing in a specific location, the data inherently captures the premium or penalty associated with local neighborhood attributes, including perceived security. To facilitate transparency and reproducibility, this compiled panel dataset is publicly hosted and maintained by the author on Kaggle at [marcodiazzz/buenos-aires-rentals-and-crime].
+To facilitate transparency and reproducibility, I independently built the dataset by scraping, cleaning, and integrating:
+* Short-term rental data from **Inside Airbnb**.
+* Official crime records, geographic features, and socioeconomic indicators (e.g., average family income) from the **Buenos Aires City Government Open Data Portal**.
+
+*Access the clean, public dataset hosted on Kaggle for automated retrieval:* [marcodiazzz/buenos-aires-rentals-and-crime]
 
 ## 🐍 Python Workflow (Fully Automated)
 
