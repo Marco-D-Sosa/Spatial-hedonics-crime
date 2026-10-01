@@ -1,4 +1,4 @@
-# Spatial Hedonics: Crime & Short-Term Rentals in Buenos Aires
+# Hedonic Pricing Model for Short-Term Rentals in Buenos Aires
 
 ![Spatial Heatmap of Rental Prices in CABA](map_price.png)
 
